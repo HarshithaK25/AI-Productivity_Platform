@@ -1,1631 +1,888 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Productivity Platform</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
 
-    <meta
-        name="description"
-        content="AI Productivity Platform — plan smarter, focus deeper, and achieve more with intelligent productivity tools."
-    >
+body{
+font-family:Arial,sans-serif;
+background:#0b1020;
+color:#fff;
+min-height:100vh;
+}
 
-    <meta name="theme-color" content="#080b18">
+.app{display:flex;min-height:100vh}
 
-    <title>AI Productivity Platform | Work Smarter</title>
+.sidebar{
+width:240px;
+background:#11182d;
+padding:25px 18px;
+position:fixed;
+height:100vh;
+}
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+.logo{
+font-size:22px;
+font-weight:bold;
+margin-bottom:35px;
+}
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+.logo span{color:#8b5cf6}
 
-    <!-- Font Awesome Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+.nav button{
+width:100%;
+padding:13px;
+margin:5px 0;
+border:0;
+border-radius:10px;
+background:transparent;
+color:#cbd5e1;
+text-align:left;
+cursor:pointer;
+font-size:15px;
+}
 
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="style.css">
+.nav button:hover,.nav button.active{
+background:#7c3aed;
+color:white;
+}
+
+.main{
+margin-left:240px;
+padding:30px;
+width:calc(100% - 240px);
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+button{
+cursor:pointer;
+}
+
+.topbtn{
+padding:10px 15px;
+border:0;
+border-radius:10px;
+background:#7c3aed;
+color:white;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px;
+margin-bottom:25px;
+}
+
+.card{
+background:#151d35;
+padding:22px;
+border-radius:16px;
+border:1px solid #26314e;
+}
+
+.card h3{
+font-size:14px;
+color:#94a3b8;
+margin-bottom:10px;
+}
+
+.card strong{
+font-size:28px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+}
+
+.panel{
+background:#151d35;
+border:1px solid #26314e;
+border-radius:16px;
+padding:22px;
+margin-bottom:20px;
+}
+
+input,textarea,select{
+width:100%;
+padding:13px;
+margin:8px 0;
+border:1px solid #334155;
+border-radius:9px;
+background:#0f172a;
+color:white;
+}
+
+.primary{
+background:#7c3aed;
+border:0;
+padding:12px 18px;
+border-radius:9px;
+color:white;
+}
+
+.task{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px;
+margin:10px 0;
+background:#0f172a;
+border-radius:10px;
+}
+
+.task.done{
+opacity:.55;
+text-decoration:line-through;
+}
+
+.badge{
+padding:5px 9px;
+border-radius:7px;
+background:#312e81;
+font-size:12px;
+}
+
+.timer{
+font-size:70px;
+text-align:center;
+margin:25px;
+}
+
+.center{text-align:center}
+
+.progress{
+height:10px;
+background:#26314e;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.progress div{
+height:100%;
+background:#8b5cf6;
+width:0%;
+}
+
+.ai-box{
+background:linear-gradient(135deg,#1e1b4b,#172554);
+padding:25px;
+border-radius:15px;
+}
+
+.message{
+padding:15px;
+background:#0f172a;
+border-radius:10px;
+margin:10px 0;
+line-height:1.5;
+}
+
+@media(max-width:800px){
+.sidebar{
+width:70px;
+padding:15px 8px;
+}
+.logo{font-size:0}
+.logo span{font-size:20px}
+.nav button{
+font-size:0;
+text-align:center;
+}
+.nav button:first-letter{font-size:20px}
+.main{
+margin-left:70px;
+width:calc(100% - 70px);
+padding:15px;
+}
+.cards{
+grid-template-columns:repeat(2,1fr);
+}
+.grid{
+grid-template-columns:1fr;
+}
+}
+</style>
 </head>
 
 <body>
 
-    <!-- ============================= -->
-    <!-- BACKGROUND EFFECTS -->
-    <!-- ============================= -->
+<div class="app">
 
-    <div class="background-glow glow-one"></div>
-    <div class="background-glow glow-two"></div>
-    <div class="background-grid"></div>
+<aside class="sidebar">
 
+<div class="logo">
+⚡ <span>AI Productivity</span>
+</div>
 
-    <!-- ============================= -->
-    <!-- NAVIGATION -->
-    <!-- ============================= -->
+<div class="nav">
 
-    <header class="header">
+<button class="active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
 
-        <nav class="navbar container">
+<button onclick="showPage('tasks',this)">✅ Tasks</button>
 
-            <!-- Logo -->
-            <a href="#home" class="logo">
-                <span class="logo-icon">
-                    <i class="fa-solid fa-bolt"></i>
-                </span>
+<button onclick="showPage('ai',this)">🤖 AI Assistant</button>
 
-                <span>AI Productivity</span>
-            </a>
+<button onclick="showPage('goals',this)">🎯 Goals</button>
 
+<button onclick="showPage('focus',this)">⏱️ Focus</button>
 
-            <!-- Desktop Navigation -->
-            <ul class="nav-links">
+<button onclick="showPage('analytics',this)">📊 Analytics</button>
 
-                <li>
-                    <a href="#home" class="active">Home</a>
-                </li>
+</div>
 
-                <li>
-                    <a href="#features">Features</a>
-                </li>
+</aside>
 
-                <li>
-                    <a href="#how-it-works">How It Works</a>
-                </li>
 
-                <li>
-                    <a href="#reviews">Reviews</a>
-                </li>
+<main class="main">
 
-            </ul>
+<header>
 
+<div>
+<h1 id="title">Good morning 👋</h1>
+<p style="color:#94a3b8">Your personal productivity command center</p>
+</div>
 
-            <!-- Navigation Button -->
-            <a href="#start" class="nav-button">
-                Get Started
-                <i class="fa-solid fa-arrow-right"></i>
-            </a>
+<button class="topbtn" onclick="toggleTheme()">🌙 Theme</button>
 
+</header>
 
-            <!-- Mobile Menu Button -->
-            <button
-                class="menu-toggle"
-                id="menu-toggle"
-                aria-label="Open navigation menu"
-            >
-                <i class="fa-solid fa-bars"></i>
-            </button>
 
-        </nav>
+<!-- DASHBOARD -->
 
-    </header>
+<section id="dashboard" class="page active">
 
+<div class="cards">
 
+<div class="card">
+<h3>Tasks Completed</h3>
+<strong id="completed">0</strong>
+</div>
 
-    <!-- ============================= -->
-    <!-- MOBILE NAVIGATION -->
-    <!-- ============================= -->
+<div class="card">
+<h3>Total Tasks</h3>
+<strong id="total">0</strong>
+</div>
 
-    <div class="mobile-menu" id="mobile-menu">
+<div class="card">
+<h3>Goals</h3>
+<strong id="goalCount">0</strong>
+</div>
 
-        <a href="#home">Home</a>
+<div class="card">
+<h3>Focus Minutes</h3>
+<strong id="focusTotal">0</strong>
+</div>
 
-        <a href="#features">Features</a>
+</div>
 
-        <a href="#how-it-works">How It Works</a>
+<div class="grid">
 
-        <a href="#reviews">Reviews</a>
+<div class="panel">
 
-        <a href="auth.html">
-              Get Started
-        </a>
-    </div>
+<h2>Today's Tasks</h2>
 
+<div id="dashboardTasks"></div>
 
+</div>
 
-    <!-- ============================= -->
-    <!-- MAIN CONTENT -->
-    <!-- ============================= -->
+<div class="panel">
 
-    <main>
+<h2>Productivity</h2>
 
+<p style="margin-top:20px">Completion</p>
 
-        <!-- ============================= -->
-        <!-- HERO SECTION -->
-        <!-- ============================= -->
+<div class="progress">
+<div id="progressBar"></div>
+</div>
 
-        <section class="hero section" id="home">
+<p id="progressText" style="margin-top:10px;color:#94a3b8">0%</p>
 
-            <div class="container hero-container">
+</div>
 
+</div>
 
-                <!-- Hero Text -->
-                <div class="hero-content">
+</section>
 
-                    <div class="eyebrow">
 
-                        <span class="eyebrow-dot"></span>
+<!-- TASKS -->
 
-                        AI-powered productivity
+<section id="tasks" class="page">
 
-                    </div>
+<div class="panel">
 
+<h2>Task Manager</h2>
 
-                    <h1>
+<input id="taskInput" placeholder="What do you need to accomplish?">
 
-                        Turn your ideas
+<select id="priority">
+<option>High</option>
+<option selected>Medium</option>
+<option>Low</option>
+</select>
 
-                        <span class="gradient-text">
-                            into progress.
-                        </span>
+<button class="primary" onclick="addTask()">+ Add Task</button>
 
-                    </h1>
+</div>
 
+<div class="panel">
 
-                    <p class="hero-description">
+<h2>Your Tasks</h2>
 
-                        Plan smarter, focus deeper, and achieve more.
-                        AI Productivity Platform brings intelligent planning,
-                        powerful automation, and meaningful insights into
-                        one beautiful workspace.
+<div id="taskList"></div>
 
-                    </p>
+</div>
 
+</section>
 
-                    <!-- Hero Buttons -->
-                    <div class="hero-buttons">
 
-                        <a href="#start" class="primary-button">
+<!-- AI -->
 
-                            Start Creating
+<section id="ai" class="page">
 
-                            <i class="fa-solid fa-arrow-right"></i>
+<div class="ai-box">
 
-                        </a>
+<h2>🤖 AI Productivity Assistant</h2>
 
+<p style="margin:12px 0;color:#cbd5e1">
+Tell me what you want to accomplish and I'll turn it into actionable steps.
+</p>
 
-                        <a href="#features" class="secondary-button">
+<textarea id="aiInput" rows="5"
+placeholder="Example: I need to prepare my hackathon project by Friday..."></textarea>
 
-                            <span class="play-icon">
-                                <i class="fa-solid fa-play"></i>
-                            </span>
+<button class="primary" onclick="generateAI()">Generate Plan</button>
 
-                            Explore Features
+<div id="aiOutput"></div>
 
-                        </a>
+</div>
 
-                    </div>
+</section>
 
 
-                    <!-- Trust -->
-                    <div class="hero-trust">
+<!-- GOALS -->
 
-                        <div class="avatar-stack">
+<section id="goals" class="page">
 
-                            <div class="avatar avatar-one">
-                                A
-                            </div>
+<div class="panel">
 
-                            <div class="avatar avatar-two">
-                                J
-                            </div>
+<h2>🎯 Goals</h2>
 
-                            <div class="avatar avatar-three">
-                                R
-                            </div>
+<input id="goalInput" placeholder="Enter a goal">
 
-                            <div class="avatar avatar-four">
-                                S
-                            </div>
+<button class="primary" onclick="addGoal()">Add Goal</button>
 
-                        </div>
+</div>
 
+<div class="panel">
 
-                        <div class="trust-text">
+<div id="goalList"></div>
 
-                            <div class="stars">
+</div>
 
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+</section>
 
-                            </div>
 
-                            <span>
-                                Trusted by productive minds
-                            </span>
+<!-- FOCUS -->
 
-                        </div>
+<section id="focus" class="page">
 
-                    </div>
+<div class="panel center">
 
-                </div>
+<h2>⏱️ Focus Mode</h2>
 
+<div class="timer" id="timer">25:00</div>
 
+<button class="primary" onclick="startTimer()">▶ Start</button>
 
-                <!-- ============================= -->
-                <!-- HERO DASHBOARD -->
-                <!-- ============================= -->
+<button class="primary" onclick="pauseTimer()">⏸ Pause</button>
 
-                <div class="hero-visual">
+<button class="primary" onclick="resetTimer()">↻ Reset</button>
 
-                    <div class="dashboard-glow"></div>
+</div>
 
+</section>
 
-                    <div class="dashboard-card">
 
+<!-- ANALYTICS -->
 
-                        <!-- Dashboard Top -->
-                        <div class="dashboard-top">
+<section id="analytics" class="page">
 
-                            <div class="dashboard-brand">
+<div class="cards">
 
-                                <div class="mini-logo">
-                                    <i class="fa-solid fa-bolt"></i>
-                                </div>
+<div class="card">
+<h3>Completion Rate</h3>
+<strong id="analyticsRate">0%</strong>
+</div>
 
-                                <div>
+<div class="card">
+<h3>Completed Tasks</h3>
+<strong id="analyticsCompleted">0</strong>
+</div>
 
-                                    <strong>
-                                        My Workspace
-                                    </strong>
+<div class="card">
+<h3>Focus Sessions</h3>
+<strong id="analyticsFocus">0</strong>
+</div>
 
-                                    <span>
-                                        Tuesday, 24 June
-                                    </span>
+</div>
 
-                                </div>
+<div class="panel">
 
-                            </div>
+<h2>📈 Productivity Overview</h2>
 
+<p style="margin-top:20px">
+Your productivity data is stored locally in your browser.
+</p>
 
-                            <div class="dashboard-actions">
+<div class="progress">
+<div id="analyticsBar"></div>
+</div>
 
-                                <button aria-label="Notifications">
-                                    <i class="fa-regular fa-bell"></i>
-                                </button>
+</div>
 
-                                <div class="profile-circle">
-                                    AP
-                                </div>
+</section>
 
-                            </div>
+</main>
+</div>
 
-                        </div>
 
+<script>
 
+let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
 
-                        <!-- Dashboard Welcome -->
-                        <div class="dashboard-welcome">
+let goals=JSON.parse(localStorage.getItem("goals")||"[]");
 
-                            <div>
+let focusMinutes=Number(localStorage.getItem("focusMinutes")||0);
 
-                                <span class="small-label">
-                                    YOUR PRODUCTIVITY
-                                </span>
+let timerSeconds=1500;
 
-                                <h3>
-                                    Good morning, Alex 👋
-                                </h3>
+let timerInterval=null;
 
-                                <p>
-                                    Let's make today count.
-                                </p>
 
-                            </div>
+function save(){
 
+localStorage.setItem("tasks",JSON.stringify(tasks));
 
-                            <div class="productivity-score">
+localStorage.setItem("goals",JSON.stringify(goals));
 
-                                <div class="score-ring">
+localStorage.setItem("focusMinutes",focusMinutes);
 
-                                    <span>
-                                        87%
-                                    </span>
+update();
 
-                                </div>
+}
 
-                            </div>
 
-                        </div>
+function showPage(id,btn){
 
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 
+document.getElementById(id).classList.add("active");
 
-                        <!-- Dashboard Stats -->
-                        <div class="dashboard-stats">
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
 
-                            <div class="dashboard-stat">
+btn.classList.add("active");
 
-                                <span class="stat-icon purple">
-                                    <i class="fa-solid fa-list-check"></i>
-                                </span>
+}
 
-                                <div>
 
-                                    <strong>18</strong>
+function addTask(){
 
-                                    <span>
-                                        Tasks completed
-                                    </span>
+let input=document.getElementById("taskInput");
 
-                                </div>
+let text=input.value.trim();
 
-                            </div>
+if(!text)return;
 
+tasks.push({
 
-                            <div class="dashboard-stat">
+id:Date.now(),
 
-                                <span class="stat-icon blue">
-                                    <i class="fa-solid fa-clock"></i>
-                                </span>
+text:text,
 
-                                <div>
+priority:document.getElementById("priority").value,
 
-                                    <strong>6.4h</strong>
+done:false
 
-                                    <span>
-                                        Focus time
-                                    </span>
+});
 
-                                </div>
+input.value="";
 
-                            </div>
+save();
 
-                        </div>
+}
 
 
+function toggleTask(id){
 
-                        <!-- Tasks -->
-                        <div class="dashboard-section-header">
+let task=tasks.find(t=>t.id===id);
 
-                            <div>
+if(task)task.done=!task.done;
 
-                                <span class="small-label">
-                                    TODAY
-                                </span>
+save();
 
-                                <h4>
-                                    Priority tasks
-                                </h4>
+}
 
-                            </div>
 
-                            <button class="more-button">
-                                <i class="fa-solid fa-ellipsis"></i>
-                            </button>
+function deleteTask(id){
 
-                        </div>
+tasks=tasks.filter(t=>t.id!==id);
 
+save();
 
-                        <div class="task-list">
+}
 
 
-                            <!-- Task 1 -->
-                            <div class="task-item completed">
+function addGoal(){
 
-                                <span class="task-check">
-                                    <i class="fa-solid fa-check"></i>
-                                </span>
+let input=document.getElementById("goalInput");
 
-                                <div class="task-info">
+let text=input.value.trim();
 
-                                    <strong>
-                                        Review project strategy
-                                    </strong>
+if(!text)return;
 
-                                    <span>
-                                        Completed
-                                    </span>
+goals.push({
 
-                                </div>
+id:Date.now(),
 
-                                <span class="task-time">
-                                    09:30
-                                </span>
+text:text,
 
-                            </div>
+done:false
 
+});
 
-                            <!-- Task 2 -->
-                            <div class="task-item">
+input.value="";
 
-                                <span class="task-check">
-                                    <i class="fa-solid fa-check"></i>
-                                </span>
+save();
 
-                                <div class="task-info">
+}
 
-                                    <strong>
-                                        Design new dashboard
-                                    </strong>
 
-                                    <span>
-                                        In progress
-                                    </span>
+function completeGoal(id){
 
-                                </div>
+let goal=goals.find(g=>g.id===id);
 
-                                <span class="task-time">
-                                    11:00
-                                </span>
+if(goal)goal.done=!goal.done;
 
-                            </div>
+save();
 
+}
 
-                            <!-- Task 3 -->
-                            <div class="task-item">
 
-                                <span class="task-check">
-                                    <i class="fa-solid fa-check"></i>
-                                </span>
+function generateAI(){
 
-                                <div class="task-info">
+let input=document.getElementById("aiInput").value.trim();
 
-                                    <strong>
-                                        Team brainstorming
-                                    </strong>
+let output=document.getElementById("aiOutput");
 
-                                    <span>
-                                        Upcoming
-                                    </span>
+if(!input){
 
-                                </div>
+output.innerHTML="<div class='message'>Please describe your goal first.</div>";
 
-                                <span class="task-time">
-                                    14:30
-                                </span>
+return;
 
-                            </div>
+}
 
+output.innerHTML=`
 
-                        </div>
+<div class="message">
 
+<h3>✨ AI Generated Productivity Plan</h3>
 
+<p style="margin-top:10px">
+Based on your objective:
+<strong>${escapeHTML(input)}</strong>
+</p>
 
-                        <!-- AI Insight -->
-                        <div class="ai-insight">
+<br>
 
-                            <div class="ai-icon">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            </div>
+<p>1️⃣ Break the objective into smaller milestones.</p>
 
-                            <div>
+<p>2️⃣ Identify the most important task and complete it first.</p>
 
-                                <strong>
-                                    AI Insight
-                                </strong>
+<p>3️⃣ Schedule a focused 25-minute work session.</p>
 
-                                <p>
-                                    You're most productive between
-                                    9 AM and 12 PM. Schedule deep work
-                                    during this window.
-                                </p>
+<p>4️⃣ Remove distractions during the session.</p>
 
-                            </div>
+<p>5️⃣ Review your progress and create the next task.</p>
 
-                        </div>
+<br>
 
+<button class="primary" onclick="createAITask()">
+Add as Task
+</button>
 
-                    </div>
+</div>`;
 
-                </div>
+}
 
-            </div>
 
-        </section>
+function createAITask(){
 
+let input=document.getElementById("aiInput").value.trim();
 
+if(!input)return;
 
-        <!-- ============================= -->
-        <!-- STATS SECTION -->
-        <!-- ============================= -->
+tasks.push({
 
-        <section class="stats-section">
+id:Date.now(),
 
-            <div class="container stats-grid">
+text:input,
 
+priority:"High",
 
-                <div class="stat-box">
+done:false
 
-                    <strong>
-                        10K+
-                    </strong>
+});
 
-                    <span>
-                        Productive users
-                    </span>
+save();
 
-                </div>
+alert("AI plan added to your tasks!");
 
+}
 
-                <div class="stat-box">
 
-                    <strong>
-                        95%
-                    </strong>
+function escapeHTML(str){
 
-                    <span>
-                        Productivity boost
-                    </span>
+return str.replace(/[&<>"']/g,function(m){
 
-                </div>
+return({
 
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
 
-                <div class="stat-box">
+})[m];
 
-                    <strong>
-                        50K+
-                    </strong>
+});
 
-                    <span>
-                        Tasks completed
-                    </span>
+}
 
-                </div>
 
+function update(){
 
-                <div class="stat-box">
+let completed=tasks.filter(t=>t.done).length;
 
-                    <strong>
-                        24/7
-                    </strong>
+let total=tasks.length;
 
-                    <span>
-                        AI assistance
-                    </span>
+let percent=total?Math.round(completed/total*100):0;
 
-                </div>
 
+document.getElementById("completed").textContent=completed;
 
-            </div>
+document.getElementById("total").textContent=total;
 
-        </section>
+document.getElementById("goalCount").textContent=goals.length;
 
+document.getElementById("focusTotal").textContent=focusMinutes;
 
 
-        <!-- ============================= -->
-        <!-- FEATURES SECTION -->
-        <!-- ============================= -->
+document.getElementById("progressBar").style.width=percent+"%";
 
-        <section class="features section" id="features">
+document.getElementById("progressText").textContent=percent+"% completed";
 
-            <div class="container">
 
+document.getElementById("analyticsRate").textContent=percent+"%";
 
-                <!-- Section Heading -->
-                <div class="section-heading">
+document.getElementById("analyticsCompleted").textContent=completed;
 
-                    <div class="eyebrow centered">
+document.getElementById("analyticsFocus").textContent=focusMinutes;
 
-                        <span class="eyebrow-dot"></span>
+document.getElementById("analyticsBar").style.width=percent+"%";
 
-                        Powerful features
 
-                    </div>
+renderTasks();
 
+renderGoals();
 
-                    <h2>
-                        Everything you need to
-                        <span class="gradient-text">
-                            do your best work.
-                        </span>
-                    </h2>
+}
 
 
-                    <p>
-                        Intelligent tools designed around the way
-                        modern teams and individuals actually work.
-                    </p>
+function renderTasks(){
 
-                </div>
+let html="";
 
+if(tasks.length===0){
 
+html="<p style='color:#94a3b8'>No tasks yet. Add your first task!</p>";
 
-                <!-- Feature Cards -->
-                <div class="features-grid">
+}
 
+tasks.forEach(t=>{
 
-                    <!-- Feature 1 -->
-                    <article class="feature-card featured-card">
+html+=`
 
-                        <div class="feature-number">
-                            01
-                        </div>
+<div class="task ${t.done?"done":""}">
 
-                        <div class="feature-icon purple-icon">
-                            <i class="fa-solid fa-brain"></i>
-                        </div>
+<div>
 
-                        <h3>
-                            AI Task Planning
-                        </h3>
+<strong>${escapeHTML(t.text)}</strong>
 
-                        <p>
-                            Turn overwhelming goals into clear,
-                            actionable tasks with intelligent AI
-                            planning.
-                        </p>
+<br>
 
-                        <a href="#start" class="feature-link">
+<span class="badge">${t.priority}</span>
 
-                            Learn more
+</div>
 
-                            <i class="fa-solid fa-arrow-right"></i>
+<div>
 
-                        </a>
+<button onclick="toggleTask(${t.id})">✓</button>
 
-                    </article>
+<button onclick="deleteTask(${t.id})">🗑️</button>
 
+</div>
 
+</div>`;
 
-                    <!-- Feature 2 -->
-                    <article class="feature-card">
+});
 
-                        <div class="feature-number">
-                            02
-                        </div>
 
-                        <div class="feature-icon blue-icon">
-                            <i class="fa-solid fa-bullseye"></i>
-                        </div>
+document.getElementById("taskList").innerHTML=html;
 
-                        <h3>
-                            Smart Focus
-                        </h3>
+document.getElementById("dashboardTasks").innerHTML=
 
-                        <p>
-                            Protect your attention with intelligent
-                            focus sessions and distraction-free
-                            workflows.
-                        </p>
+tasks.slice(0,5).map(t=>`
 
-                        <a href="#start" class="feature-link">
+<div class="task ${t.done?"done":""}">
 
-                            Learn more
+<span>${escapeHTML(t.text)}</span>
 
-                            <i class="fa-solid fa-arrow-right"></i>
+<button onclick="toggleTask(${t.id})">✓</button>
 
-                        </a>
+</div>
 
-                    </article>
+`).join("") || "<p style='color:#94a3b8'>No tasks yet.</p>";
 
+}
 
 
-                    <!-- Feature 3 -->
-                    <article class="feature-card">
+function renderGoals(){
 
-                        <div class="feature-number">
-                            03
-                        </div>
+let html="";
 
-                        <div class="feature-icon green-icon">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
+goals.forEach(g=>{
 
-                        <h3>
-                            Progress Analytics
-                        </h3>
+html+=`
 
-                        <p>
-                            Understand your productivity patterns
-                            through simple and meaningful analytics.
-                        </p>
+<div class="task ${g.done?"done":""}">
 
-                        <a href="#start" class="feature-link">
+<span>🎯 ${escapeHTML(g.text)}</span>
 
-                            Learn more
+<button onclick="completeGoal(${g.id})">✓</button>
 
-                            <i class="fa-solid fa-arrow-right"></i>
+</div>`;
 
-                        </a>
+});
 
-                    </article>
 
+document.getElementById("goalList").innerHTML=
 
+html||"<p style='color:#94a3b8'>No goals yet.</p>";
 
-                    <!-- Feature 4 -->
-                    <article class="feature-card">
+}
 
-                        <div class="feature-number">
-                            04
-                        </div>
 
-                        <div class="feature-icon orange-icon">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
+function startTimer(){
 
-                        <h3>
-                            AI Assistant
-                        </h3>
+if(timerInterval)return;
 
-                        <p>
-                            Get personalized suggestions, summaries,
-                            ideas, and productivity recommendations
-                            whenever you need them.
-                        </p>
+timerInterval=setInterval(()=>{
 
-                        <a href="#start" class="feature-link">
+if(timerSeconds>0){
 
-                            Learn more
+timerSeconds--;
 
-                            <i class="fa-solid fa-arrow-right"></i>
+displayTimer();
 
-                        </a>
+}else{
 
-                    </article>
+clearInterval(timerInterval);
 
+timerInterval=null;
 
-                </div>
+focusMinutes+=25;
 
-            </div>
+save();
 
-        </section>
+alert("🎉 Focus session completed!");
 
+}
 
+},1000);
 
-        <!-- ============================= -->
-        <!-- HOW IT WORKS -->
-        <!-- ============================= -->
+}
 
-        <section class="how-it-works section" id="how-it-works">
 
-            <div class="container">
+function pauseTimer(){
 
+clearInterval(timerInterval);
 
-                <div class="section-heading">
+timerInterval=null;
 
-                    <div class="eyebrow centered">
+}
 
-                        <span class="eyebrow-dot"></span>
 
-                        Simple workflow
+function resetTimer(){
 
-                    </div>
+pauseTimer();
 
+timerSeconds=1500;
 
-                    <h2>
-                        From idea to
-                        <span class="gradient-text">
-                            achievement.
-                        </span>
-                    </h2>
+displayTimer();
 
+}
 
-                    <p>
-                        Three simple steps to transform the way
-                        you work every day.
-                    </p>
 
-                </div>
+function displayTimer(){
 
+let m=Math.floor(timerSeconds/60);
 
+let s=timerSeconds%60;
 
-                <div class="steps-grid">
+document.getElementById("timer").textContent=
 
+String(m).padStart(2,"0")+":"+
 
-                    <!-- Step 1 -->
-                    <div class="step-card">
+String(s).padStart(2,"0");
 
-                        <div class="step-top">
+}
 
-                            <span class="step-number">
-                                01
-                            </span>
 
-                            <div class="step-icon">
-                                <i class="fa-solid fa-lightbulb"></i>
-                            </div>
+function toggleTheme(){
 
-                        </div>
+document.body.style.background=
 
-                        <h3>
-                            Capture your ideas
-                        </h3>
+document.body.style.background==="white"?"#0b1020":"white";
 
-                        <p>
-                            Add goals, projects, tasks, or ideas
-                            without worrying about organization.
-                        </p>
+document.body.style.color=
 
-                    </div>
+document.body.style.color==="rgb(0, 0, 0)"?"white":"#000";
 
+}
 
 
-                    <!-- Step 2 -->
-                    <div class="step-card">
+update();
 
-                        <div class="step-top">
+displayTimer();
 
-                            <span class="step-number">
-                                02
-                            </span>
-
-                            <div class="step-icon">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            </div>
-
-                        </div>
-
-                        <h3>
-                            Let AI organize
-                        </h3>
-
-                        <p>
-                            Our intelligent system turns your ideas
-                            into a focused and achievable plan.
-                        </p>
-
-                    </div>
-
-
-
-                    <!-- Step 3 -->
-                    <div class="step-card">
-
-                        <div class="step-top">
-
-                            <span class="step-number">
-                                03
-                            </span>
-
-                            <div class="step-icon">
-                                <i class="fa-solid fa-rocket"></i>
-                            </div>
-
-                        </div>
-
-                        <h3>
-                            Make progress
-                        </h3>
-
-                        <p>
-                            Focus on what matters, track your progress,
-                            and keep moving toward your goals.
-                        </p>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ============================= -->
-        <!-- PRODUCTIVITY SHOWCASE -->
-        <!-- ============================= -->
-
-        <section class="showcase section">
-
-            <div class="container showcase-container">
-
-
-                <!-- Showcase Text -->
-                <div class="showcase-content">
-
-                    <div class="eyebrow">
-
-                        <span class="eyebrow-dot"></span>
-
-                        Your personal AI coach
-
-                    </div>
-
-
-                    <h2>
-                        Work with
-                        <span class="gradient-text">
-                            clarity.
-                        </span>
-                    </h2>
-
-
-                    <p>
-                        AI Productivity Platform learns from your
-                        workflow and helps you make better decisions
-                        about where to spend your time.
-                    </p>
-
-
-                    <ul class="check-list">
-
-                        <li>
-
-                            <span>
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-
-                            Personalized daily planning
-
-                        </li>
-
-
-                        <li>
-
-                            <span>
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-
-                            Intelligent task prioritization
-
-                        </li>
-
-
-                        <li>
-
-                            <span>
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-
-                            Focus and productivity insights
-
-                        </li>
-
-
-                        <li>
-
-                            <span>
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-
-                            Weekly performance summaries
-
-                        </li>
-
-                    </ul>
-
-
-                    <a href="#start" class="primary-button">
-
-                        Explore your workflow
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-
-
-                <!-- Showcase Visual -->
-                <div class="showcase-visual">
-
-                    <div class="analytics-card">
-
-
-                        <div class="analytics-header">
-
-                            <div>
-
-                                <span class="small-label">
-                                    PRODUCTIVITY
-                                </span>
-
-                                <h3>
-                                    Weekly overview
-                                </h3>
-
-                            </div>
-
-                            <button class="period-button">
-                                This week
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </button>
-
-                        </div>
-
-
-                        <!-- Chart -->
-                        <div class="chart">
-
-                            <div class="chart-labels">
-
-                                <span>100%</span>
-                                <span>75%</span>
-                                <span>50%</span>
-                                <span>25%</span>
-                                <span>0%</span>
-
-                            </div>
-
-
-                            <div class="chart-area">
-
-                                <div class="chart-grid-line"></div>
-                                <div class="chart-grid-line"></div>
-                                <div class="chart-grid-line"></div>
-                                <div class="chart-grid-line"></div>
-
-
-                                <div class="chart-bars">
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-1"></div>
-
-                                        <span>
-                                            Mon
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-2"></div>
-
-                                        <span>
-                                            Tue
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-3"></div>
-
-                                        <span>
-                                            Wed
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-4"></div>
-
-                                        <span>
-                                            Thu
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-5"></div>
-
-                                        <span>
-                                            Fri
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-6"></div>
-
-                                        <span>
-                                            Sat
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="bar-wrapper">
-
-                                        <div class="bar bar-7"></div>
-
-                                        <span>
-                                            Sun
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- Analytics Footer -->
-                        <div class="analytics-footer">
-
-                            <div>
-
-                                <span>
-                                    Average focus
-                                </span>
-
-                                <strong>
-                                    82%
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    vs last week
-                                </span>
-
-                                <strong class="positive">
-                                    +14.8%
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Floating AI Card -->
-                    <div class="floating-ai-card">
-
-                        <div class="floating-ai-icon">
-
-                            <i class="fa-solid fa-sparkles"></i>
-
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Great momentum!
-                            </strong>
-
-                            <span>
-                                You're 14% more productive
-                                this week.
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ============================= -->
-        <!-- TESTIMONIALS -->
-        <!-- ============================= -->
-
-        <section class="reviews section" id="reviews">
-
-            <div class="container">
-
-
-                <div class="section-heading">
-
-                    <div class="eyebrow centered">
-
-                        <span class="eyebrow-dot"></span>
-
-                        User stories
-
-                    </div>
-
-
-                    <h2>
-                        Loved by people who
-                        <span class="gradient-text">
-                            get things done.
-                        </span>
-                    </h2>
-
-
-                    <p>
-                        See how AI-powered productivity can change
-                        the way you work.
-                    </p>
-
-                </div>
-
-
-
-                <div class="reviews-grid">
-
-
-                    <!-- Review 1 -->
-                    <article class="review-card">
-
-                        <div class="quote-icon">
-                            <i class="fa-solid fa-quote-left"></i>
-                        </div>
-
-
-                        <div class="review-stars">
-
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-
-                        </div>
-
-
-                        <p class="review-text">
-
-                            "It completely changed how I plan my
-                            work. Instead of spending an hour organizing
-                            my tasks, I can start working in minutes."
-
-                        </p>
-
-
-                        <div class="review-author">
-
-                            <div class="author-avatar">
-                                AR
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Alex Rivera
-                                </strong>
-
-                                <span>
-                                    Product Designer
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- Review 2 -->
-                    <article class="review-card featured-review">
-
-                        <div class="quote-icon">
-                            <i class="fa-solid fa-quote-left"></i>
-                        </div>
-
-
-                        <div class="review-stars">
-
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-
-                        </div>
-
-
-                        <p class="review-text">
-
-                            "The AI insights are incredibly useful.
-                            I finally understand when I work best
-                            and where my time is actually going."
-
-                        </p>
-
-
-                        <div class="review-author">
-
-                            <div class="author-avatar">
-                                JM
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Jordan Miller
-                                </strong>
-
-                                <span>
-                                    Startup Founder
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- Review 3 -->
-                    <article class="review-card">
-
-                        <div class="quote-icon">
-                            <i class="fa-solid fa-quote-left"></i>
-                        </div>
-
-
-                        <div class="review-stars">
-
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-
-                        </div>
-
-
-                        <p class="review-text">
-
-                            "Beautiful, simple, and genuinely useful.
-                            It feels less like another productivity
-                            app and more like having a personal coach."
-
-                        </p>
-
-
-                        <div class="review-author">
-
-                            <div class="author-avatar">
-                                SK
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Sam Kim
-                                </strong>
-
-                                <span>
-                                    Creative Director
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ============================= -->
-        <!-- CTA SECTION -->
-        <!-- ============================= -->
-
-        <section class="cta section" id="start">
-
-            <div class="container">
-
-                <div class="cta-card">
-
-
-                    <div class="cta-glow"></div>
-
-
-                    <div class="cta-content">
-
-                        <div class="cta-icon">
-
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-
-                        </div>
-
-
-                        <h2>
-                            Your best work
-                            <span class="gradient-text">
-                                starts today.
-                            </span>
-                        </h2>
-
-
-                        <p>
-                            Stop managing your productivity.
-                            Start improving it.
-                        </p>
-
-
-                        <a href="#home" class="primary-button cta-button">
-
-                            Start Your Journey
-
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </a>
-
-
-                        <span class="cta-note">
-                            No credit card required
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-    </main>
-
-
-
-    <!-- ============================= -->
-    <!-- FOOTER -->
-    <!-- ============================= -->
-
-    <footer class="footer">
-
-        <div class="container">
-
-
-            <div class="footer-main">
-
-
-                <!-- Footer Brand -->
-                <div class="footer-brand">
-
-                    <a href="#home" class="logo">
-
-                        <span class="logo-icon">
-                            <i class="fa-solid fa-bolt"></i>
-                        </span>
-
-                        <span>
-                            AI Productivity
-                        </span>
-
-                    </a>
-
-
-                    <p>
-                        Plan smarter. Focus deeper.
-                        Achieve more.
-                    </p>
-
-
-                    <div class="social-links">
-
-                        <a href="#" aria-label="Twitter">
-                            <i class="fa-brands fa-x-twitter"></i>
-                        </a>
-
-                        <a href="#" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                        </a>
-
-                        <a href="#" aria-label="GitHub">
-                            <i class="fa-brands fa-github"></i>
-                        </a>
-
-                        <a href="#" aria-label="Instagram">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Footer Links -->
-                <div class="footer-links-column">
-
-                    <h4>
-                        Product
-                    </h4>
-
-                    <a href="#features">
-                        Features
-                    </a>
-
-                    <a href="#how-it-works">
-                        How It Works
-                    </a>
-
-                    <a href="#start">
-                        Get Started
-                    </a>
-
-                </div>
-
-
-
-                <div class="footer-links-column">
-
-                    <h4>
-                        Company
-                    </h4>
-
-                    <a href="#home">
-                        About
-                    </a>
-
-                    <a href="#reviews">
-                        Reviews
-                    </a>
-
-                    <a href="#start">
-                        Contact
-                    </a>
-
-                </div>
-
-
-
-                <div class="footer-links-column">
-
-                    <h4>
-                        Resources
-                    </h4>
-
-                    <a href="#start">
-                        Help Center
-                    </a>
-
-                    <a href="#start">
-                        Documentation
-                    </a>
-
-                    <a href="#start">
-                        Privacy
-                    </a>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-
-                <p>
-                    © 2026 AI Productivity Platform.
-                    All rights reserved.
-                </p>
-
-
-                <div>
-
-                    <span>
-                        Built with
-                    </span>
-
-                    <i class="fa-solid fa-heart"></i>
-
-                    <span>
-                        using HTML, CSS & JavaScript
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </footer>
-
-
-
-    <!-- ============================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================= -->
-
-    <script src="script.js"></script>
+</script>
 
 </body>
 </html>
