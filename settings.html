@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings — AI Productivity Platform</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+
+    --bg: #070914;
+    --sidebar: #0b0f1c;
+    --card: rgba(255,255,255,.055);
+    --input: rgba(255,255,255,.04);
+    --border: rgba(255,255,255,.09);
+
+    --text: #f5f7ff;
+    --muted: #8991a5;
+
+    --purple: #8b5cf6;
+    --blue: #3b82f6;
+
+}
+
+body {
+
+    min-height: 100vh;
+
+    color: var(--text);
+
+    background: var(--bg);
+
+    font-family: Inter, sans-serif;
+
+    transition: .25s;
+
+}
+
+body.light {
+
+    --bg: #f5f7fb;
+    --sidebar: #ffffff;
+    --card: #ffffff;
+    --input: #f5f6fa;
+    --border: #e3e6ee;
+
+    --text: #151827;
+    --muted: #697083;
+
+}
+
+button,
+input,
+select {
+
+    font-family: inherit;
+
+}
+
+button {
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   APP
+========================= */
+
+.app {
+
+    min-height: 100vh;
+
+    display: flex;
+
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+
+    width: 240px;
+
+    flex-shrink: 0;
+
+    padding: 25px 16px;
+
+    background: var(--sidebar);
+
+    border-right:
+        1px solid var(--border);
+
+}
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        0 10px 30px;
+
+    font-family:
+        "Space Grotesk";
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+.logo-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 11px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--blue)
+        );
+
+}
+
+.nav {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+}
+
+.nav button {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px;
+
+    color: var(--muted);
+
+    background: transparent;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    text-align: left;
+
+    font-size: 12px;
+
+}
+
+.nav button:hover,
+.nav button.active {
+
+    color: var(--text);
+
+    background:
+        rgba(139,92,246,.15);
+
+}
+
+.nav i {
+
+    width: 18px;
+
+    text-align: center;
+
+}
+
+.signout {
+
+    width: 100%;
+
+    margin-top: 30px;
+
+    padding: 11px;
+
+    color: var(--muted);
+
+    background: transparent;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    font-size: 10px;
+
+}
+
+.signout:hover {
+
+    color: var(--text);
+
+    background:
+        rgba(255,255,255,.05);
+
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 30px;
+
+    max-width: 1100px;
+
+}
+
+.topbar {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    margin-bottom: 25px;
+
+}
+
+h1 {
+
+    font-family:
+        "Space Grotesk";
+
+    font-size: 27px;
+
+}
+
+.subtitle {
+
+    margin-top: 6px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+}
+
+.avatar {
+
+    width: 35px;
+
+    height: 35px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--blue)
+        );
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+.profile strong {
+
+    display: block;
+
+    font-size: 10px;
+
+}
+
+.profile span {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+}
+
+
+/* =========================
+   SETTINGS GRID
+========================= */
+
+.settings-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 16px;
+
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+
+    padding: 20px;
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+}
+
+.card.full {
+
+    grid-column:
+        1 / -1;
+
+}
+
+.card-header {
+
+    margin-bottom: 20px;
+
+}
+
+.card-header h2 {
+
+    font-family:
+        "Space Grotesk";
+
+    font-size: 13px;
+
+}
+
+.card-header p {
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+
+    margin-bottom: 15px;
+
+}
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+}
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    color: var(--text);
+
+    background: var(--input);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 10px;
+
+}
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color:
+        rgba(139,92,246,.6);
+
+}
+
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+.save-btn {
+
+    padding:
+        11px 18px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--blue)
+        );
+
+    border: 0;
+
+    border-radius: 9px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+}
+
+.save-btn:hover {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================
+   TOGGLE
+========================= */
+
+.setting-row {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        13px 0;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+.setting-row:last-child {
+
+    border-bottom: 0;
+
+}
+
+.setting-info strong {
+
+    display: block;
+
+    font-size: 10px;
+
+}
+
+.setting-info span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+}
+
+
+/* SWITCH */
+
+.switch {
+
+    position: relative;
+
+    width: 38px;
+
+    height: 21px;
+
+}
+
+.switch input {
+
+    display: none;
+
+}
+
+.slider {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        #303545;
+
+    border-radius: 30px;
+
+    transition: .2s;
+
+}
+
+.slider::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 15px;
+
+    height: 15px;
+
+    left: 3px;
+
+    top: 3px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: .2s;
+
+}
+
+.switch input:checked + .slider {
+
+    background:
+        var(--purple);
+
+}
+
+.switch input:checked + .slider::before {
+
+    transform:
+        translateX(17px);
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.workspace-stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 10px;
+
+}
+
+.workspace-stat {
+
+    padding: 15px;
+
+    background:
+        var(--input);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+}
+
+.workspace-stat i {
+
+    color:
+        #a78bfa;
+
+    font-size: 12px;
+
+}
+
+.workspace-stat strong {
+
+    display: block;
+
+    margin-top: 9px;
+
+    font-family:
+        "Space Grotesk";
+
+    font-size: 20px;
+
+}
+
+.workspace-stat span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+}
+
+
+/* =========================
+   DANGER
+========================= */
+
+.danger {
+
+    border-color:
+        rgba(248,113,113,.2);
+
+}
+
+.danger h2 {
+
+    color:
+        #fb7185;
+
+}
+
+.delete-btn {
+
+    margin-top: 15px;
+
+    padding:
+        10px 15px;
+
+    color:
+        #fb7185;
+
+    background:
+        rgba(248,113,113,.08);
+
+    border:
+        1px solid
+        rgba(248,113,113,.2);
+
+    border-radius: 9px;
+
+    font-size: 9px;
+
+}
+
+.delete-btn:hover {
+
+    background:
+        rgba(248,113,113,.15);
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 25px;
+
+    padding:
+        12px 16px;
+
+    color: white;
+
+    background:
+        #171b2b;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    font-size: 9px;
+
+    opacity: 0;
+
+    transform:
+        translateY(15px);
+
+    pointer-events: none;
+
+    transition: .25s;
+
+}
+
+.toast.show {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:750px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .main {
+
+        padding:
+            20px 15px;
+
+    }
+
+    .profile {
+
+        display: none;
+
+    }
+
+    .settings-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .card.full {
+
+        grid-column:
+            auto;
+
+    }
+
+    .workspace-stats {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+
+            <i class="fa-solid fa-sparkles"></i>
+
+        </div>
+
+        AI Productivity
+
+    </div>
+
+
+    <nav class="nav">
+
+        <button
+            onclick="location.href='dashboard.html'"
+        >
+
+            <i class="fa-solid fa-grid-2"></i>
+
+            Dashboard
+
+        </button>
+
+
+        <button
+            onclick="location.href='dashboard.html'"
+        >
+
+            <i class="fa-solid fa-list-check"></i>
+
+            Tasks
+
+        </button>
+
+
+        <button
+            onclick="location.href='analytics.html'"
+        >
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Analytics
+
+        </button>
+
+
+        <button
+            onclick="location.href='ai.html'"
+        >
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            AI Assistant
+
+        </button>
+
+
+        <button class="active">
+
+            <i class="fa-solid fa-gear"></i>
+
+            Settings
+
+        </button>
+
+    </nav>
+
+
+    <button
+        class="signout"
+        onclick="signOut()"
+    >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Sign Out
+
+    </button>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div>
+
+        <h1>
+            Settings
+        </h1>
+
+        <p class="subtitle">
+            Personalize your productivity workspace.
+        </p>
+
+    </div>
+
+
+    <div class="profile">
+
+        <div
+            class="avatar"
+            id="avatar"
+        >
+            U
+        </div>
+
+        <div>
+
+            <strong id="userName">
+                User
+            </strong>
+
+            <span>
+                Productivity member
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="settings-grid">
+
+
+<!-- =========================
+     PROFILE
+========================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>
+            Profile
+        </h2>
+
+        <p>
+            Update your personal information.
+        </p>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Your name
+        </label>
+
+        <input
+            id="nameInput"
+            type="text"
+            placeholder="Your name"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Email
+        </label>
+
+        <input
+            id="emailInput"
+            type="email"
+            placeholder="you@example.com"
+        >
+
+    </div>
+
+
+    <button
+        class="save-btn"
+        onclick="saveProfile()"
+    >
+
+        Save profile
+
+    </button>
+
+</div>
+
+
+<!-- =========================
+     APPEARANCE
+========================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>
+            Appearance
+        </h2>
+
+        <p>
+            Customize how the platform looks.
+        </p>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Theme
+        </label>
+
+        <select
+            id="themeSelect"
+            onchange="changeTheme()"
+        >
+
+            <option value="dark">
+                Dark
+            </option>
+
+            <option value="light">
+                Light
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="setting-row">
+
+        <div class="setting-info">
+
+            <strong>
+                Compact interface
+            </strong>
+
+            <span>
+                Use smaller spacing across the app.
+            </span>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                id="compactToggle"
+                type="checkbox"
+                onchange="savePreferences()"
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     NOTIFICATIONS
+========================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>
+            Notifications
+        </h2>
+
+        <p>
+            Control productivity reminders.
+        </p>
+
+    </div>
+
+
+    <div class="setting-row">
+
+        <div class="setting-info">
+
+            <strong>
+                Task reminders
+            </strong>
+
+            <span>
+                Remind me about unfinished tasks.
+            </span>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                id="taskNotifications"
+                type="checkbox"
+                onchange="savePreferences()"
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+
+    <div class="setting-row">
+
+        <div class="setting-info">
+
+            <strong>
+                Daily summary
+            </strong>
+
+            <span>
+                Receive a daily productivity summary.
+            </span>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                id="dailySummary"
+                type="checkbox"
+                onchange="savePreferences()"
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+
+    <div class="setting-row">
+
+        <div class="setting-info">
+
+            <strong>
+                AI suggestions
+            </strong>
+
+            <span>
+                Allow productivity recommendations.
+            </span>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                id="aiSuggestions"
+                type="checkbox"
+                onchange="savePreferences()"
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     WORKSPACE
+========================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>
+            Workspace
+        </h2>
+
+        <p>
+            Your current productivity statistics.
+        </p>
+
+    </div>
+
+
+    <div class="workspace-stats">
+
+
+        <div class="workspace-stat">
+
+            <i class="fa-solid fa-list-check"></i>
+
+            <strong id="totalTasks">
+                0
+            </strong>
+
+            <span>
+                Total tasks
+            </span>
+
+        </div>
+
+
+        <div class="workspace-stat">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <strong id="completedTasks">
+                0
+            </strong>
+
+            <span>
+                Completed
+            </span>
+
+        </div>
+
+
+        <div class="workspace-stat">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <strong id="completionRate">
+                0%
+            </strong>
+
+            <span>
+                Completion
+            </span>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     DANGER ZONE
+========================= -->
+
+<div class="card full danger">
+
+    <div class="card-header">
+
+        <h2>
+            Danger zone
+        </h2>
+
+        <p>
+            Permanently remove your local productivity data.
+        </p>
+
+    </div>
+
+
+    <button
+        class="delete-btn"
+        onclick="resetData()"
+    >
+
+        <i class="fa-solid fa-trash"></i>
+
+        Reset all app data
+
+    </button>
+
+</div>
+
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+    Saved successfully
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+let profile =
+    JSON.parse(
+        localStorage.getItem(
+            "aiProductivityProfile"
+        )
+    ) || {
+
+        name: "User",
+
+        email: ""
+
+    };
+
+
+document.getElementById(
+    "nameInput"
+).value =
+    profile.name || "";
+
+
+document.getElementById(
+    "emailInput"
+).value =
+    profile.email || "";
+
+
+document.getElementById(
+    "userName"
+).textContent =
+    profile.name || "User";
+
+
+document.getElementById(
+    "avatar"
+).textContent =
+    (profile.name || "U")
+        .charAt(0)
+        .toUpperCase();
+
+
+/* =====================================================
+   PROFILE SAVE
+===================================================== */
+
+function saveProfile() {
+
+    const name =
+        document
+            .getElementById("nameInput")
+            .value
+            .trim();
+
+
+    const email =
+        document
+            .getElementById("emailInput")
+            .value
+            .trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please enter your name."
+        );
+
+        return;
+
+    }
+
+
+    profile = {
+
+        name: name,
+
+        email: email
+
+    };
+
+
+    localStorage.setItem(
+
+        "aiProductivityProfile",
+
+        JSON.stringify(profile)
+
+    );
+
+
+    document.getElementById(
+        "userName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        name.charAt(0).toUpperCase();
+
+
+    showToast(
+        "Profile saved"
+    );
+
+}
+
+
+/* =====================================================
+   PREFERENCES
+===================================================== */
+
+let preferences =
+    JSON.parse(
+        localStorage.getItem(
+            "aiProductivityPreferences"
+        )
+    ) || {
+
+        theme: "dark",
+
+        compact: false,
+
+        taskNotifications: true,
+
+        dailySummary: false,
+
+        aiSuggestions: true
+
+    };
+
+
+document.getElementById(
+    "themeSelect"
+).value =
+    preferences.theme;
+
+
+document.getElementById(
+    "compactToggle"
+).checked =
+    preferences.compact;
+
+
+document.getElementById(
+    "taskNotifications"
+).checked =
+    preferences.taskNotifications;
+
+
+document.getElementById(
+    "dailySummary"
+).checked =
+    preferences.dailySummary;
+
+
+document.getElementById(
+    "aiSuggestions"
+).checked =
+    preferences.aiSuggestions;
+
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function changeTheme() {
+
+    preferences.theme =
+        document.getElementById(
+            "themeSelect"
+        ).value;
+
+
+    applyTheme();
+
+    savePreferences();
+
+}
+
+
+function applyTheme() {
+
+    if (
+        preferences.theme ===
+        "light"
+    ) {
+
+        document.body.classList.add(
+            "light"
+        );
+
+    } else {
+
+        document.body.classList.remove(
+            "light"
+        );
+
+    }
+
+}
+
+
+applyTheme();
+
+
+/* =====================================================
+   SAVE PREFERENCES
+===================================================== */
+
+function savePreferences() {
+
+    preferences.compact =
+        document.getElementById(
+            "compactToggle"
+        ).checked;
+
+
+    preferences.taskNotifications =
+        document.getElementById(
+            "taskNotifications"
+        ).checked;
+
+
+    preferences.dailySummary =
+        document.getElementById(
+            "dailySummary"
+        ).checked;
+
+
+    preferences.aiSuggestions =
+        document.getElementById(
+            "aiSuggestions"
+        ).checked;
+
+
+    localStorage.setItem(
+
+        "aiProductivityPreferences",
+
+        JSON.stringify(preferences)
+
+    );
+
+
+    showToast(
+        "Preferences saved"
+    );
+
+}
+
+
+/* =====================================================
+   TASK STATISTICS
+===================================================== */
+
+function updateStats() {
+
+    const tasks =
+        JSON.parse(
+            localStorage.getItem(
+                "aiProductivityTasks"
+            )
+        ) || [];
+
+
+    const completed =
+        tasks.filter(
+            task => task.done
+        ).length;
+
+
+    const rate =
+        tasks.length
+            ? Math.round(
+                completed /
+                tasks.length *
+                100
+            )
+            : 0;
+
+
+    document.getElementById(
+        "totalTasks"
+    ).textContent =
+        tasks.length;
+
+
+    document.getElementById(
+        "completedTasks"
+    ).textContent =
+        completed;
+
+
+    document.getElementById(
+        "completionRate"
+    ).textContent =
+        rate + "%";
+
+}
+
+
+updateStats();
+
+
+/* =====================================================
+   RESET DATA
+===================================================== */
+
+function resetData() {
+
+    const confirmed =
+        confirm(
+            "This will permanently delete your profile, tasks and settings. Continue?"
+        );
+
+
+    if (!confirmed) return;
+
+
+    localStorage.removeItem(
+        "aiProductivityProfile"
+    );
+
+
+    localStorage.removeItem(
+        "aiProductivityTasks"
+    );
+
+
+    localStorage.removeItem(
+        "aiProductivityPreferences"
+    );
+
+
+    alert(
+        "All local app data has been reset."
+    );
+
+
+    location.href =
+        "auth.html";
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+
+}
+
+
+/* =====================================================
+   SIGN OUT
+===================================================== */
+
+function signOut() {
+
+    if (
+        confirm(
+            "Are you sure you want to sign out?"
+        )
+    ) {
+
+        location.href =
+            "auth.html";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

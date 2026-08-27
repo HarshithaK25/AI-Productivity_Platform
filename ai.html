@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Assistant — AI Productivity Platform</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--bg:#070914;
+--sidebar:#0b0f1c;
+--card:rgba(255,255,255,.055);
+--border:rgba(255,255,255,.09);
+--text:#f5f7ff;
+--muted:#8991a5;
+--purple:#8b5cf6;
+--blue:#3b82f6;
+}
+
+body{
+min-height:100vh;
+color:var(--text);
+background:var(--bg);
+font-family:Inter,sans-serif;
+}
+
+button,
+textarea{
+font-family:inherit;
+}
+
+.app{
+min-height:100vh;
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:240px;
+flex-shrink:0;
+padding:25px 16px;
+background:var(--sidebar);
+border-right:1px solid var(--border);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 10px 30px;
+font-family:"Space Grotesk";
+font-size:14px;
+font-weight:700;
+}
+
+.logo-icon{
+width:38px;
+height:38px;
+display:grid;
+place-items:center;
+border-radius:11px;
+background:linear-gradient(135deg,var(--purple),var(--blue));
+}
+
+.nav{
+display:flex;
+flex-direction:column;
+gap:5px;
+}
+
+.nav button{
+width:100%;
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px;
+border:0;
+border-radius:10px;
+color:var(--muted);
+background:transparent;
+text-align:left;
+font-size:12px;
+cursor:pointer;
+}
+
+.nav button:hover,
+.nav button.active{
+color:white;
+background:rgba(139,92,246,.15);
+}
+
+.nav i{
+width:18px;
+text-align:center;
+}
+
+.signout{
+width:100%;
+margin-top:30px;
+padding:11px;
+border:1px solid var(--border);
+border-radius:10px;
+color:var(--muted);
+background:transparent;
+font-size:10px;
+cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+min-width:0;
+padding:30px;
+}
+
+.header{
+margin-bottom:22px;
+}
+
+.header h1{
+font-family:"Space Grotesk";
+font-size:28px;
+}
+
+.header p{
+margin-top:6px;
+color:var(--muted);
+font-size:10px;
+}
+
+/* AI CARD */
+
+.ai-box{
+max-width:900px;
+margin:auto;
+}
+
+.chat{
+height:480px;
+overflow-y:auto;
+padding:20px;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+}
+
+.message{
+display:flex;
+gap:10px;
+margin-bottom:18px;
+}
+
+.message.user{
+justify-content:flex-end;
+}
+
+.avatar{
+width:32px;
+height:32px;
+flex-shrink:0;
+display:grid;
+place-items:center;
+border-radius:9px;
+background:linear-gradient(135deg,var(--purple),var(--blue));
+font-size:10px;
+}
+
+.bubble{
+max-width:75%;
+padding:12px 14px;
+border-radius:12px;
+background:rgba(255,255,255,.055);
+color:#dce0eb;
+font-size:10px;
+line-height:1.7;
+}
+
+.user .bubble{
+background:linear-gradient(135deg,var(--purple),var(--blue));
+color:white;
+}
+
+/* QUICK ACTIONS */
+
+.quick{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin:12px 0;
+}
+
+.quick button{
+padding:12px 8px;
+border:1px solid var(--border);
+border-radius:10px;
+color:var(--muted);
+background:var(--card);
+font-size:8px;
+cursor:pointer;
+}
+
+.quick button:hover{
+color:white;
+border-color:rgba(139,92,246,.5);
+}
+
+.quick i{
+display:block;
+margin-bottom:6px;
+color:#a78bfa;
+font-size:14px;
+}
+
+/* INPUT */
+
+.input-area{
+display:flex;
+gap:8px;
+margin-top:10px;
+}
+
+textarea{
+flex:1;
+height:55px;
+resize:none;
+padding:14px;
+outline:none;
+color:white;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:11px;
+font-size:10px;
+}
+
+textarea:focus{
+border-color:rgba(139,92,246,.6);
+}
+
+.send{
+width:55px;
+border:0;
+border-radius:11px;
+color:white;
+background:linear-gradient(135deg,var(--purple),var(--blue));
+cursor:pointer;
+}
+
+.clear{
+margin-top:8px;
+padding:7px 10px;
+border:0;
+background:transparent;
+color:var(--muted);
+font-size:8px;
+cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+padding:18px 12px;
+}
+
+.chat{
+height:430px;
+}
+
+.quick{
+grid-template-columns:repeat(2,1fr);
+}
+
+.bubble{
+max-width:85%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo">
+
+<div class="logo-icon">
+<i class="fa-solid fa-sparkles"></i>
+</div>
+
+AI Productivity
+
+</div>
+
+
+<nav class="nav">
+
+<button onclick="go('dashboard.html')">
+<i class="fa-solid fa-grid-2"></i>
+Dashboard
+</button>
+
+<button onclick="go('dashboard.html')">
+<i class="fa-solid fa-list-check"></i>
+Tasks
+</button>
+
+<button onclick="go('analytics.html')">
+<i class="fa-solid fa-chart-line"></i>
+Analytics
+</button>
+
+<button class="active">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+AI Assistant
+</button>
+
+<button onclick="go('settings.html')">
+<i class="fa-solid fa-gear"></i>
+Settings
+</button>
+
+</nav>
+
+
+<button class="signout" onclick="signOut()">
+<i class="fa-solid fa-right-from-bracket"></i>
+Sign Out
+</button>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<div class="header">
+
+<h1>AI Assistant</h1>
+
+<p>
+Your personal productivity companion.
+</p>
+
+</div>
+
+
+<div class="ai-box">
+
+<div class="chat" id="chat">
+
+<div class="message">
+
+<div class="avatar">
+<i class="fa-solid fa-sparkles"></i>
+</div>
+
+<div class="bubble">
+
+Hello! 👋 I'm your productivity assistant.
+
+Tell me what you want to accomplish and I'll help you organize it.
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="quick">
+
+<button onclick="quickPrompt('Help me plan my day')">
+<i class="fa-solid fa-calendar-day"></i>
+Plan my day
+</button>
+
+<button onclick="quickPrompt('Give me productivity tips')">
+<i class="fa-solid fa-lightbulb"></i>
+Productivity tips
+</button>
+
+<button onclick="quickPrompt('Help me prioritize my tasks')">
+<i class="fa-solid fa-ranking-star"></i>
+Prioritize
+</button>
+
+<button onclick="quickPrompt('Create a study plan for me')">
+<i class="fa-solid fa-book"></i>
+Study plan
+</button>
+
+</div>
+
+
+<!-- INPUT -->
+
+<div class="input-area">
+
+<textarea
+id="prompt"
+placeholder="Ask your productivity assistant..."
+onkeydown="handleKey(event)"
+></textarea>
+
+<button class="send" onclick="sendMessage()">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+</button>
+
+</div>
+
+
+<button class="clear" onclick="clearChat()">
+
+<i class="fa-solid fa-trash"></i>
+Clear conversation
+
+</button>
+
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* NAVIGATION */
+
+function go(page){
+window.location.href=page;
+}
+
+
+/* PROFILE */
+
+const profile=
+JSON.parse(
+localStorage.getItem("aiProductivityProfile")
+);
+
+
+/* SEND */
+
+function sendMessage(){
+
+const input=
+document.getElementById("prompt");
+
+const text=
+input.value.trim();
+
+if(!text) return;
+
+addMessage(text,"user");
+
+input.value="";
+
+setTimeout(function(){
+
+const response=
+generateResponse(text);
+
+addMessage(response,"ai");
+
+},400);
+
+}
+
+
+/* QUICK PROMPTS */
+
+function quickPrompt(text){
+
+document.getElementById("prompt").value=text;
+
+sendMessage();
+
+}
+
+
+/* ADD MESSAGE */
+
+function addMessage(text,type){
+
+const chat=
+document.getElementById("chat");
+
+const message=
+document.createElement("div");
+
+message.className=
+"message "+type;
+
+if(type==="user"){
+
+message.innerHTML=`
+
+<div class="bubble">
+${escapeHTML(text)}
+</div>
+
+`;
+
+}else{
+
+message.innerHTML=`
+
+<div class="avatar">
+<i class="fa-solid fa-sparkles"></i>
+</div>
+
+<div class="bubble">
+${escapeHTML(text).replace(/\n/g,"<br>")}
+</div>
+
+`;
+
+}
+
+chat.appendChild(message);
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+
+/* SIMPLE PRODUCTIVITY ENGINE */
+
+function generateResponse(text){
+
+const lower=text.toLowerCase();
+
+
+if(
+lower.includes("plan my day") ||
+lower.includes("plan my day")
+){
+
+return `Here's a simple plan for your day:
+
+1. Start with your most important task.
+2. Work for 45–60 minutes without distractions.
+3. Take a short break.
+4. Complete smaller tasks afterward.
+5. Review your progress before finishing.
+
+Tip: Choose your top 3 priorities instead of trying to finish everything.`;
+
+}
+
+
+if(
+lower.includes("productivity") ||
+lower.includes("productive")
+){
+
+return `Try these productivity habits:
+
+• Choose 3 important tasks each morning.
+• Keep your phone away during focused work.
+• Use short focused work sessions.
+• Take regular breaks.
+• Review unfinished tasks at the end of the day.
+
+Consistency is more important than doing everything perfectly.`;
+
+}
+
+
+if(
+lower.includes("prioritize") ||
+lower.includes("priority")
+){
+
+return `Use this priority system:
+
+🔴 High — Urgent and important
+🟡 Medium — Important but not urgent
+🟢 Low — Useful but can wait
+
+Start with high-priority tasks, then move to medium and low priorities.`;
+
+}
+
+
+if(
+lower.includes("study") ||
+lower.includes("exam")
+){
+
+return `A simple study plan:
+
+Morning:
+• Review difficult topics.
+
+Afternoon:
+• Practice questions.
+
+Evening:
+• Revise what you learned.
+
+Use 45-minute study sessions followed by 10-minute breaks.
+
+At the end of each session, test yourself instead of only rereading notes.`;
+
+}
+
+
+if(
+lower.includes("task") ||
+lower.includes("todo")
+){
+
+return `For your tasks, try this:
+
+1. Write everything down.
+2. Mark urgent tasks as High priority.
+3. Pick your top 3 tasks.
+4. Complete one task at a time.
+5. Check your progress at the end of the day.
+
+You can manage your tasks from the Dashboard.`;
+
+}
+
+
+if(
+lower.includes("hello") ||
+lower.includes("hi") ||
+lower.includes("hey")
+){
+
+return `Hello${profile?.name ? " " + profile.name : ""}! 👋
+
+What would you like help with today?
+
+You can ask me to plan your day, prioritize tasks, create a study plan, or give productivity advice.`;
+
+}
+
+
+return `I can help you with productivity, planning and organization.
+
+Try asking:
+
+• "Help me plan my day"
+• "How should I prioritize my tasks?"
+• "Give me productivity tips"
+• "Create a study plan"
+
+For advanced AI responses, we can connect this interface to a real AI API later.`;
+
+}
+
+
+/* CLEAR */
+
+function clearChat(){
+
+document.getElementById("chat").innerHTML=`
+
+<div class="message">
+
+<div class="avatar">
+<i class="fa-solid fa-sparkles"></i>
+</div>
+
+<div class="bubble">
+
+Conversation cleared. What would you like to work on?
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ENTER TO SEND */
+
+function handleKey(event){
+
+if(
+event.key==="Enter" &&
+!event.shiftKey
+){
+
+event.preventDefault();
+
+sendMessage();
+
+}
+
+}
+
+
+/* SECURITY */
+
+function escapeHTML(text){
+
+return text
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* SIGN OUT */
+
+function signOut(){
+
+if(
+confirm("Are you sure you want to sign out?")
+){
+
+localStorage.removeItem(
+"aiProductivityLoggedIn"
+);
+
+window.location.href="auth.html";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
